@@ -4,7 +4,8 @@ namespace App\Http\Controllers\API\V1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ServiceRequest;
-use Illuminate\Http\Request;
+use App\Http\Resources\ServiceResource;
+use App\Models\Service;
 
 class ServiceController extends Controller
 {
@@ -13,7 +14,9 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        //
+        $services = Service::where('is_active', true)->get();
+
+        return (ServiceResource::collection($services));
     }
 
     /**
