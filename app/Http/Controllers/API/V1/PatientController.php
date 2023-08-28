@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\PatientRequest;
 use App\Http\Resources\PatientResource;
 use App\Models\Patient;
+use App\Models\PatientService;
+use Illuminate\Support\Facades\DB;
 
 class PatientController extends Controller
 {
@@ -27,7 +29,22 @@ class PatientController extends Controller
     {
         $validData = $request->validated();
 
-        $patient = Patient::create($validData);
+        try {
+            DB::beginTransaction();
+            $patient = Patient::create($validData);
+
+            PatientService::create([
+                'patient_id' => $patient->id,
+                'service_id' => $patient->service_id,
+                'comment' => $validData->comment,
+            ]);
+
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+
+            throw $e;
+        }
 
         return new PatientResource($patient);
     }
