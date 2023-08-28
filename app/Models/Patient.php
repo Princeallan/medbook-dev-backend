@@ -16,11 +16,6 @@ class Patient extends Model
         'name', 'date_of_birth', 'gender_id', 'user_id'
     ];
 
-    public function services(): BelongsToMany
-    {
-        return $this->BelongsToMany(Service::class, '');
-    }
-
     public function gender(): BelongsTo
     {
         return $this->belongsTo(Gender::class);

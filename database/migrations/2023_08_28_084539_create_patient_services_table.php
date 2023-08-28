@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('patient_id');
             $table->foreignId('service_id');
-            $table->string('comments')->nullable();
+            $table->string('comment')->nullable();
             $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
